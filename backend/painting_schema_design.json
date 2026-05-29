@@ -1,0 +1,46 @@
+{
+  "_id": "ObjectId('65f1ab2c3f4e5a6b7c8d9e0f')",
+  "painting_id": "indira_1896",
+  "title": "Indira",
+  "year": 1896,
+  "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Raja_Ravi_Varma_-_Indira.jpg/800px-Raja_Ravi_Varma_-_Indira.jpg",
+  "print_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Raja_Ravi_Varma_-_Oleograph_Indira.jpg/800px-Raja_Ravi_Varma_-_Oleograph_Indira.jpg",
+  
+  "narrative_sections": {
+    "intro_hook": "A breakthrough late 19th-century portrait capturing elite visual history...",
+    "geometry_story": "Notice how Varma structures her posture. As you scroll, look at the glowing lines converge over her left shoulder, drawing focus away from standard rigid centers...",
+    "material_story": "The vibrant Vermillion Red occupies a significant portion of the canvas profile, contrasted deeply by a 7.08-bit shadow depth gradient...",
+    "historical_story": "When translated to lithographic prints in 1894, the delicate lace borders of her necklace were heavily compressed due to stone etching limitations..."
+  },
+  
+  "geometry_layer": {
+    "vanishing_point": [790, 168],
+    "golden_nodes": {
+      "top_left": [356, 506],
+      "top_right": [577, 506],
+      "bottom_left": [356, 819],
+      "bottom_right": [577, 819]
+    },
+    "alignment_errors": {
+      "top_left": 550.09,
+      "top_right": 399.52,
+      "bottom_left": 782.4,
+      "bottom_right": 684.96
+    },
+    "vector_lines_array": [
+      [[355, 1306], [901, 1306]]
+    ]
+  },
+  
+  "material_layer": {
+    "dominant_palette_rgb": [
+      [128, 165, 185],
+      [132, 71, 58],
+      [231, 208, 167],
+      [201, 94, 72],
+      [83, 52, 45]
+    ],
+    "shannon_entropy_bits": 7.0824,
+    "lbp_texture_fingerprint": [0.0222, 0.0952, 0.0127, 0.1386, 0.0547]
+  }
+}
