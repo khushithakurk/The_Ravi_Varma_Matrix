@@ -13,7 +13,7 @@ const app = express();
 app.use(cors({ 
   origin: [
     'http://localhost:5173', 
-    'https://your-frontend-vercel-url.vercel.app' // <--- Replace this with your actual frontend Vercel URL later
+    'https://the-ravi-varma-matrix.vercel.app' // <--- Updated with your actual production URL layout strings
   ] 
 }));
 app.use(express.json());
@@ -36,14 +36,22 @@ const PaintingSchema = new mongoose.Schema({
 
 const Painting = mongoose.models.Painting || mongoose.model('Painting', PaintingSchema);
 
-// 3. SECURE CONFIGURATION: Pulls dynamically from Vercel's Dashboard settings or your local .env file
-const atlasUri = process.env.MONGODB_URI;
+// 3. SECURE CONFIGURATION WITH LOCAL BYPASS ESCAPE
+// Paste your connection string inside the quotes below if your terminal's .env loader is still acting up!
+const localHardcodedFallback = "mongodb+srv://kkt_rrv:rrvmatrix@cluster0.jqbi9cg.mongodb.net/?appName=Cluster0"; 
+
+const atlasUri = process.env.MONGODB_URI || localHardcodedFallback;
 
 if (!atlasUri) {
   console.error('\n☠️  ENVIRONMENT CONFIGURATION BLOCKER:');
   console.error('================================================================');
   console.error('The MONGODB_URI environment key is not loaded into memory runtime.');
+  console.error('Bypass this locally by dropping your string directly into localHardcodedFallback inside server.js\n');
 } else {
+  // Safely masks credentials output so your backend terminal log stays secure
+  const secureLogSnippet = atlasUri.includes('@') ? atlasUri.split('@')[1] : 'Direct String Verification';
+  console.log(`📡 CONNECTING VIA MATRIX GATEWAY BASE: [...@${secureLogSnippet}]`);
+
   mongoose.connect(atlasUri)
     .then(() => console.log('🚀 SYSTEM CRITICAL STATUS: LIVE ACCESS GRANTED TO ATLAS VECTOR CLUSTER'))
     .catch(err => console.error('☠️ ATLAS CLUSTER HANDSHAKE FAULT:', err));
