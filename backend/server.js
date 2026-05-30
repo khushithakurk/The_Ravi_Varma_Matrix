@@ -40,7 +40,7 @@ const Painting = mongoose.models.Painting || mongoose.model('Painting', Painting
 // Paste your connection string inside the quotes below if your terminal's .env loader is still acting up!
 const localHardcodedFallback = ""; 
 
-const atlasUri = process.env.MONGODB_URI || localHardcodedFallback;
+const atlasUri = process.env.MONGODB_URI;
 
 if (!atlasUri) {
   console.error('\n☠️  ENVIRONMENT CONFIGURATION BLOCKER:');
@@ -92,6 +92,22 @@ const runEngineAnalysis = (engineScript, imagePath) => {
     setTimeout(() => { worker.kill(); resolve(null); }, 4000);
   });
 };
+
+app.get('/debug/images', (req, res) => {
+  try {
+    res.json({
+      imagesPath: absoluteImagesPath,
+      exists: fs.existsSync(absoluteImagesPath),
+      files: fs.existsSync(absoluteImagesPath)
+        ? fs.readdirSync(absoluteImagesPath)
+        : []
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
 
 app.get('/api/paintings', async (req, res) => {
   try {
