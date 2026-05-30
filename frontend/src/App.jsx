@@ -198,9 +198,10 @@ export default function App() {
   const canvasRef = useRef(null);
   const imgRef = useRef(null);
 
-  const BACKEND_BASE_URL = window.location.hostname === 'localhost' 
+const BACKEND_BASE_URL = window.location.hostname === 'localhost' 
   ? 'http://localhost:5001' 
-  : 'https://your-backend-vercel-url.vercel.app'; // <--- You will paste your actual live Vercel backend URL here after deploying the backend!
+  : window.location.origin; // <--- Dynamically reads the current Vercel URL
+
   
   const leftWingBackdrop = `${BACKEND_BASE_URL}/images/shantanoo_and_matsyagandha.jpg`;
   const rightWingBackdrop = `${BACKEND_BASE_URL}/images/shakuntala.jpg`;
