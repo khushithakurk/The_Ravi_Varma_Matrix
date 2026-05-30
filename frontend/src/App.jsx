@@ -199,7 +199,7 @@ export default function App() {
   const imgRef = useRef(null);
 
 const BACKEND_BASE_URL = "https://the-ravi-varma-matrix.onrender.com"
-  const leftWingBackdrop = `${BACKEND_BASE_URL}/images/shantanoo_and_matsyagandha.jpg`;
+  const leftWingBackdrop = `${BACKEND_BASE_URL}/images/Shantanoo_and_Matsyagandha.jpg`;
   const rightWingBackdrop = `${BACKEND_BASE_URL}/images/shakuntala.jpg`;
   //frontend
   const genericFallbackPlaceholder = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%2309090c'/></svg>";
