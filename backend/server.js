@@ -38,7 +38,7 @@ const Painting = mongoose.models.Painting || mongoose.model('Painting', Painting
 
 // 3. SECURE CONFIGURATION WITH LOCAL BYPASS ESCAPE
 // Paste your connection string inside the quotes below if your terminal's .env loader is still acting up!
-const localHardcodedFallback = "mongodb+srv://kkt_rrv:rrvmatrix@cluster0.jqbi9cg.mongodb.net/?appName=Cluster0"; 
+const localHardcodedFallback = ""; 
 
 const atlasUri = process.env.MONGODB_URI || localHardcodedFallback;
 
