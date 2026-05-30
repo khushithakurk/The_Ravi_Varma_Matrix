@@ -1,3 +1,5 @@
+require('dotenv').config(); // 1. CRITICAL: Added at the absolute top for local development
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -6,7 +8,14 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:5173' }));
+
+// 2. PRODUCTION CORS SETUP: Allows both your local testing suite and your upcoming Vercel production frontend
+app.use(cors({ 
+  origin: [
+    'http://localhost:5173', 
+    'https://your-frontend-vercel-url.vercel.app' // <--- Replace this with your actual frontend Vercel URL later
+  ] 
+}));
 app.use(express.json());
 
 const absoluteImagesPath = path.resolve(__dirname, 'images');
@@ -26,11 +35,19 @@ const PaintingSchema = new mongoose.Schema({
 }, { collection: 'paintings' });
 
 const Painting = mongoose.models.Painting || mongoose.model('Painting', PaintingSchema);
+
+// 3. SECURE CONFIGURATION: Pulls dynamically from Vercel's Dashboard settings or your local .env file
 const atlasUri = process.env.MONGODB_URI;
 
-mongoose.connect(atlasUri)
-  .then(() => console.log('🚀 SYSTEM CRITICAL STATUS: LIVE ACCESS GRANTED TO ATLAS VECTOR CLUSTER'))
-  .catch(err => console.error('☠️ ATLAS CLUSTER HANDSHAKE FAULT:', err));
+if (!atlasUri) {
+  console.error('\n☠️  ENVIRONMENT CONFIGURATION BLOCKER:');
+  console.error('================================================================');
+  console.error('The MONGODB_URI environment key is not loaded into memory runtime.');
+} else {
+  mongoose.connect(atlasUri)
+    .then(() => console.log('🚀 SYSTEM CRITICAL STATUS: LIVE ACCESS GRANTED TO ATLAS VECTOR CLUSTER'))
+    .catch(err => console.error('☠️ ATLAS CLUSTER HANDSHAKE FAULT:', err));
+}
 
 const artworkNarratives = {
   "arjun_subhadra": "Arjuna elopes with Krishna's sister, Subhadra, presenting an extraordinary layout balance of classic landscape depth and emotional drapery composition.",
@@ -70,6 +87,10 @@ const runEngineAnalysis = (engineScript, imagePath) => {
 
 app.get('/api/paintings', async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({ error: "Atlas database connection loop initializing, try again shortly." });
+    }
+
     const diskFiles = fs.readdirSync(absoluteImagesPath);
     const imageFiles = diskFiles.filter(f => f.match(/\.(jpg|jpeg|png|webp)$/i));
     const filteredFiles = imageFiles.filter(f => !f.toLowerCase().includes('damask') && !f.toLowerCase().includes('bg'));
@@ -81,8 +102,6 @@ app.get('/api/paintings', async (req, res) => {
       const cleanNarrative = artworkNarratives[lookupKey] || `Dynamic computational matrix profile generated live for target asset source: ${filename}.`;
 
       let databaseRecord = await Painting.findById(assetId);
-
-      // FORCE OVERWRITE STRATEGY: Displaces old stuck indira URLs with your actual file names
       const exactImagePath = `/images/${filename}`;
 
       if (!databaseRecord) {
@@ -103,12 +122,10 @@ app.get('/api/paintings', async (req, res) => {
           }
         });
       } else {
-        // Unconditional Database Update Override
         databaseRecord.image_url = exactImagePath;
         if (artworkNarratives[lookupKey]) {
           databaseRecord.metadata.historical_narrative = artworkNarratives[lookupKey];
         }
-        
         await Painting.findByIdAndUpdate(assetId, { 
           image_url: exactImagePath,
           "metadata.historical_narrative": databaseRecord.metadata.historical_narrative 
@@ -159,5 +176,6 @@ app.get('/api/paintings/:id', async (req, res) => {
   }
 });
 
+// 4. DYNAMIC PORT BINDING: Swaps static 5001 for Vercel's runtime environment port handler
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`📡 ORCHESTRATOR PIPELINE ACTIVE ON PORT ${PORT}`));
