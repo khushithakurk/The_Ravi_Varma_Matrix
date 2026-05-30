@@ -198,11 +198,7 @@ export default function App() {
   const canvasRef = useRef(null);
   const imgRef = useRef(null);
 
-const BACKEND_BASE_URL = window.location.hostname === 'localhost' 
-  ? 'http://localhost:5001' 
-  : window.location.origin; // <--- Dynamically reads the current Vercel URL
-
-  
+const BACKEND_BASE_URL = "https://the-ravi-varma-matrix.onrender.com"
   const leftWingBackdrop = `${BACKEND_BASE_URL}/images/shantanoo_and_matsyagandha.jpg`;
   const rightWingBackdrop = `${BACKEND_BASE_URL}/images/shakuntala.jpg`;
   
