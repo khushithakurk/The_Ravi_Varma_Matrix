@@ -83,13 +83,29 @@ const runEngineAnalysis = (engineScript, imagePath) => {
     const scriptPath = path.join(__dirname, 'analytics_engine', engineScript);
     if (!fs.existsSync(scriptPath)) return resolve(null);
 
+    // Using 'python3' or fallback to standard 'python' depending on Render's native host configuration
     const worker = spawn('python3', [scriptPath, imagePath]);
     let output = "";
+    let errorLog = "";
+
     worker.stdout.on('data', (d) => output += d.toString());
-    worker.on('close', () => {
-      try { resolve(output.trim() ? JSON.parse(output) : null); } catch (e) { resolve(null); }
+    worker.stderr.on('data', (d) => errorLog += d.toString()); // Captures exact Python framework faults
+
+    worker.on('close', (code) => {
+      if (errorLog) console.error(`🐍 PYTHON SCRIPT FAULT (${engineScript}):`, errorLog);
+      try { 
+        resolve(output.trim() ? JSON.parse(output) : null); 
+      } catch (e) { 
+        resolve(null); 
+      }
     });
-    setTimeout(() => { worker.kill(); resolve(null); }, 4000);
+
+    // BUMPED TIMEOUT WINDOW FROM 4s TO 15s: Gives Render's server CPU ample room to complete heavy vision calculations
+    setTimeout(() => { 
+      if (worker.connected) console.warn(`⏰ Analysis Timeout for ${engineScript}. Killing execution loop.`);
+      worker.kill(); 
+      resolve(null); 
+    }, 15000);
   });
 };
 
