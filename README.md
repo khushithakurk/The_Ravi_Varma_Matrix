@@ -6,8 +6,8 @@ An advanced, full-stack monorepo web platform engineered to bridge 19th-century 
 
 The platform is designed around a decoupled, full-stack multi-tier monorepo architecture engineered for high-performance data rendering and system resilience:
 
-* **Frontend (Vercel Host):** A single-page application built on React, Vite, and custom CSS layout design systems, streaming responsive media layers via viewport-reactive nodes.
-* **Backend (Render Host):** A persistent Express (Node.js) orchestrator pipeline driving native Python asynchronous worker subprocesses via `child_process` decoupling blocks.
+* **Frontend :** A single-page application built on React, Vite, and custom CSS layout design systems, streaming responsive media layers via viewport-reactive nodes.
+* **Backend :** A persistent Express (Node.js) orchestrator pipeline driving native Python asynchronous worker subprocesses via `child_process` decoupling blocks.
 * **Computer Vision Layer:** Native OpenCV script engines computing runtime pixel matrices, high-frequency structural edge boundaries (Canny edge extraction), and color distribution complexity metrics.
 * **Database Vector Layer (MongoDB Atlas Cluster):** A cloud NoSQL cluster mapping unstructured metadata payloads, historical narrative blobs, and computed computer vision geometries permanently onto cloud indexes.
 
